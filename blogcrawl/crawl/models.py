@@ -21,6 +21,8 @@ class Blog(models.Model):
                 continue
             except requests.exceptions.ReadTimeout:
                 continue
+            except:
+                continue
             break
 
         soup = BeautifulSoup(r.text, 'html.parser')
