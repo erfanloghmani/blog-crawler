@@ -6,12 +6,14 @@ import re
 class Blog(models.Model):
     CRAWL_STATUS = (
         ('N', 'Not Yet'),
+        ('Q', 'In Queue'),
         ('Y', 'Done'),
     )
     name = models.CharField(max_length=60)
     crawl_status = models.CharField(max_length=1, choices=CRAWL_STATUS)
+
     def find_links(self):
-        found_links = []
+        found_links = set()
         while True:
             try:
                 r = requests.get('http://' + self.name + '.blog.ir/')
@@ -26,7 +28,7 @@ class Blog(models.Model):
                 link = a['href']
                 m = re.match(r'http://(?P<name>\w+)\.blog.ir/', link)
                 if m:
-                    found_links.append(m.group('name'))
+                    found_links.add(m.group('name'))
         return(found_links)
 
     def crawl(self):

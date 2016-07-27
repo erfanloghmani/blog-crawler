@@ -2,6 +2,11 @@ from django.core.management.base import BaseCommand, CommandError
 from crawl.models import Blog
 from collections import deque
 
+def append_to_deque(d, blog):
+    blog.crawl_status = 'Q'
+    blog.save()
+    d.append(blog)
+
 class Command(BaseCommand):
     help = 'bfs on blog network'
 
@@ -11,11 +16,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         count = options['count'][0]
         d = deque()
-        for blog in Blog.objects.filter(crawl_status='N'):
-            d.append(blog)
-        c = 0
-        while d and c < count:
-            blog = d.popleft()
-            for nblog in blog.crawl():
-                d.append(nblog)
-            c += 1
+        try:
+            for blog in Blog.objects.filter(crawl_status='N'):
+                append_to_deque(d, blog)
+            c = 0
+            while d and c < count:
+                blog = d.popleft()
+                for nblog in blog.crawl():
+                    append_to_deque(d, nblog)
+                c += 1
+        finally:
+            # clean crawl_status for objects in queue
+            while d:
+                blog = d.popleft()
+                blog.crawl_status = 'N'
+                blog.save()
