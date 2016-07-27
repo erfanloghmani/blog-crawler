@@ -19,6 +19,8 @@ class Blog(models.Model):
                 r = requests.get('http://' + self.name + '.blog.ir/')
             except requests.ConnectionError:
                 continue
+            except requests.exceptions.ReadTimeout:
+                continue
             break
 
         soup = BeautifulSoup(r.text, 'html.parser')
