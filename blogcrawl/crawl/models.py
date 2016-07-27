@@ -22,13 +22,11 @@ class Blog(models.Model):
             break
 
         soup = BeautifulSoup(r.text, 'html.parser')
-        links_divs = soup.find_all("ul", class_='links')
-        for links in links_divs:
-            for a in links.find_all('a'):
-                link = a['href']
-                m = re.match(r'http://(?P<name>\w+)\.blog.ir/', link)
-                if m:
-                    found_links.add(m.group('name'))
+        for a in soup.find_all('a'):
+            link = a['href']
+            m = re.match(r'http://(?P<name>\w+)\.blog.ir/', link)
+            if m:
+                found_links.add(m.group('name'))
         return(found_links)
 
     def crawl(self):
