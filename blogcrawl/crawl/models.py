@@ -23,10 +23,13 @@ class Blog(models.Model):
 
         soup = BeautifulSoup(r.text, 'html.parser')
         for a in soup.find_all('a'):
-            link = a['href']
-            m = re.match(r'http://(?P<name>\w+)\.blog.ir/', link)
-            if m:
-                found_links.add(m.group('name'))
+            try:
+                link = a['href']
+                m = re.match(r'http://(?P<name>\w+)\.blog.ir/', link)
+                if m:
+                    found_links.add(m.group('name'))
+            except KeyError:
+                continue
         return(found_links)
 
     def crawl(self):
