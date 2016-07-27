@@ -1,3 +1,4 @@
 venv/
 blogcrawl/.idea/
+blogcrawl/db.sqlite3
 **/*.pyc
