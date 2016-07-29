@@ -36,7 +36,8 @@ class Command(BaseCommand):
             break
         soup = BeautifulSoup(r.text, 'html.parser')
         title = soup.find(id='firstHeading')
-        self.crawl_word(title.string)
+        if title.string:
+            self.crawl_word(title.string)
 
     def crawl_word_start(self, word, start=0):
         while True:
