@@ -43,5 +43,5 @@ class Command(BaseCommand):
                 while True:
                     time.sleep(float(options['wait']))
                     crawl_blog_changes()
-            except:
+            except KeyboardInterrupt:
                 self.stderr.write(self.style.ERROR('terminated'))

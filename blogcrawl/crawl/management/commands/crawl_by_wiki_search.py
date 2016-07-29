@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 while True:
                     time.sleep(float(options['wait']))
                     self.crawl_by_wiki_search()
-            except:
+            except KeyboardInterrupt:
                 self.stderr.write(self.style.ERROR('terminated'))
 
     def crawl_by_wiki_search(self):
