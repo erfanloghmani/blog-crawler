@@ -19,7 +19,7 @@ class Command(BaseCommand):
         while True:
             try:
                 r = requests.get('http://blogs.salam.ir/blog.ir?q=' + word + '&start=' + str(start))
-            except requests.ConnectionError:
+            except:
                 continue
             break
         soup = BeautifulSoup(r.text, 'html.parser')

@@ -9,7 +9,7 @@ def crawl_blog_changes():
     while True:
         try:
             r = requests.get('http://blog.ir/changes')
-        except requests.ConnectionError:
+        except:
             continue
         break
     soup = BeautifulSoup(r.text, 'html.parser')
