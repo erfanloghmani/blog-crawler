@@ -3,5 +3,4 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
-    url(r'json$', views.json_export),
 ]
