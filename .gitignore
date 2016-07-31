@@ -1,4 +1,6 @@
 venv/
 blogcrawl/.idea/
+blogcrawl/blog/static
 blogcrawl/db.sqlite3
 **/*.pyc
+blogcrawl/crawl/static/graph.json
