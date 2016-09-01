@@ -11,8 +11,8 @@ class Blog(models.Model):
     )
     name = models.CharField(max_length=60)
     crawl_status = models.CharField(max_length=1, choices=CRAWL_STATUS)
-    in_degree = models.IntegerField(null=True)
-    out_degree = models.IntegerField(null=True)
+    in_degree = models.IntegerField(null=True, default=0)
+    out_degree = models.IntegerField(null=True, default=0)
 
     def find_links(self):
         found_links = set()
@@ -55,7 +55,11 @@ class Blog(models.Model):
             if not Link.objects.filter(src=self, dest=dest):
                 link = Link()
                 link.src = self
+                self.out_degree = self.out_degree + 1
                 link.dest = dest
+                dest.in_degree = dest.in_degree + 1
+                self.save()
+                dest.save()
                 link.save()
         self.crawl_status = 'Y'
         print(self.name + ' crowled')
