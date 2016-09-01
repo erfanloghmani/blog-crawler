@@ -11,6 +11,8 @@ class Blog(models.Model):
     )
     name = models.CharField(max_length=60)
     crawl_status = models.CharField(max_length=1, choices=CRAWL_STATUS)
+    in_degree = models.IntegerField(null=True)
+    out_degree = models.IntegerField(null=True)
 
     def find_links(self):
         found_links = set()
@@ -60,10 +62,10 @@ class Blog(models.Model):
         self.save()
         return not_crawled_blogs
 
-    def in_degree(self):
+    def in_degree_count(self):
         return len(self.dest.all())
 
-    def out_degree(self):
+    def out_degree_count(self):
         return len(self.src.all())
 
 class Link(models.Model):

@@ -29,13 +29,13 @@ def index(request):
     return render(request, 'crawl/index.html', context)
 
 def in_degrees(request, page):
-    sorted_in_degrees = Paginator(sorted(Blog.objects.all(), key=lambda a: a.in_degree(), reverse=True), 20)
+    sorted_in_degrees = Paginator(Blog.objects.order_by('-in_degree'), 20)
     p = sorted_in_degrees.page(page).object_list
     p = list(map(lambda a: a.id, p))
     return HttpResponse(json.dumps(p))
 
 def out_degrees(request, page):
-    sorted_out_degrees = Paginator(sorted(Blog.objects.all(), key=lambda a: a.out_degree(), reverse=True), 20)
+    sorted_out_degrees = Paginator(Blog.objects.order_by('-out_degree'), 20)
     p = sorted_out_degrees.page(page).object_list
     p = list(map(lambda a: a.id, p))
     return HttpResponse(json.dumps(p))
@@ -46,3 +46,13 @@ def link_count(request):
         counts.append((len(Link.objects.filter(dest=blog)), blog.name))
     counts.sort()
     return HttpResponse(str(counts))
+
+def fill_degrees():
+    count = 0
+    for blog in Blog.objects.all():
+        if count % 100 == 0:
+            print(count)
+        count += 1
+        blog.in_degree = blog.in_degree_count()
+        blog.out_degree = blog.out_degree_count()
+        blog.save()
