@@ -1,7 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Blog, Link
-# Create your views here.
+from rest_framework import viewsets
+from .serializers import BlogSerializer, LinkSerializer
+
+
+class BlogViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Blog.objects.all().order_by('id')
+    serializer_class = BlogSerializer
+
+class LinkViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Link.objects.all().order_by('id')
+    serializer_class = LinkSerializer
 
 def index(request):
     blog_count = len(Blog.objects.all())
