@@ -1,5 +1,6 @@
 venv/
 blogcrawl/.idea/
+blogcrawl/blogcrawl/local_settings.py
 blogcrawl/blog/static
 blogcrawl/db.sqlite3
 **/*.pyc

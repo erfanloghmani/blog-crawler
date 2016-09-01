@@ -19,8 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wqi!w=^f^ia_(ndmie&72@ynh+gn&_a5(**nfw&$(#n9dtdi+f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -108,3 +106,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }
+
+from .local_settings import *
