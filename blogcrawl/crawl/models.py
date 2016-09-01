@@ -60,6 +60,12 @@ class Blog(models.Model):
         self.save()
         return not_crawled_blogs
 
+    def in_degree(self):
+        return len(self.dest.all())
+
+    def out_degree(self):
+        return len(self.src.all())
+
 class Link(models.Model):
     src = models.ForeignKey(Blog, related_name="src")
     dest = models.ForeignKey(Blog, related_name="dest")

@@ -52,6 +52,7 @@ class DestHyperlink(serializers.HyperlinkedRelatedField):
 
 
 class BlogSerializer(serializers.HyperlinkedModelSerializer):
+
     src = SrcHyperlink(many=True, read_only=True)
     dest = DestHyperlink(many=True, read_only=True)
 
