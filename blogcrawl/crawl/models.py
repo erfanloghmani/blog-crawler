@@ -127,7 +127,7 @@ class Post(models.Model):
                 continue
             break
         soup = BeautifulSoup(r.text, 'html.parser')
-        body_classes = ['body', 'post-content', 'context', 'PostContent']
+        body_classes = ['body', 'post-content', 'context', 'PostContent', 'main-post', 'post-matn']
         for body_class in body_classes:
             if len(soup.find_all(class_=body_class)) > 0:
                 body = soup.find_all(class_=body_class)[0].descendants
