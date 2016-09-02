@@ -38,7 +38,7 @@ def graph(request, blog):
     links = []
     while len(d) > 0:
         x = d.pop()
-        if nodes[x.id]['dist'] < 2:
+        if nodes[x.id]['dist'] < 3:
             for src in x.src.all():
                 links.append({'source': x.id, 'target': src.dest.id})
                 try:
@@ -46,13 +46,13 @@ def graph(request, blog):
                 except:
                     nodes[src.dest.id] = {'id': src.dest.id, 'name': src.dest.name, 'dist': nodes[x.id]['dist'] + 1}
                     d.append(src.dest)
-        for dest in x.dest.all():
-            links.append({'source': dest.src.id, 'target': x.id})
-            try:
-                nodes[dest.src.id]
-            except:
-                nodes[dest.src.id] = {'id': dest.src.id, 'name': dest.src.name, 'dist': nodes[x.id]['dist'] + 1}
-                d.append(dest.src)
+            for dest in x.dest.all():
+                links.append({'source': dest.src.id, 'target': x.id})
+                try:
+                    nodes[dest.src.id]
+                except:
+                    nodes[dest.src.id] = {'id': dest.src.id, 'name': dest.src.name, 'dist': nodes[x.id]['dist'] + 1}
+                    d.append(dest.src)
 
     return render(request, 'crawl/graph.html', {'nodes': nodes, 'links': links})
 
