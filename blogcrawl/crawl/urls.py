@@ -8,7 +8,7 @@ router.register(r'link', views.LinkViewSet)
 
 urlpatterns = [
     url(r'^$', views.index),
-    url(r'^graph$', views.graph),
+    url(r'^graph/(?P<blog>\w+)$', views.graph),
     url(r'^blog/(?P<blog>\w+)$', views.blog),
     url(r'^in_degrees/(?P<page>[0-9]+)$', views.in_degrees),
     url(r'^out_degrees/(?P<page>[0-9]+)$', views.out_degrees),
