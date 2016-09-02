@@ -9,10 +9,10 @@ class Blog(models.Model):
         ('Q', 'In Queue'),
         ('Y', 'Done'),
     )
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
     crawl_status = models.CharField(max_length=1, choices=CRAWL_STATUS)
-    in_degree = models.IntegerField(null=True)
-    out_degree = models.IntegerField(null=True)
+    in_degree = models.IntegerField(null=True, default=0)
+    out_degree = models.IntegerField(null=True, default=0)
 
     def find_links(self):
         found_links = set()

@@ -1,0 +1,28 @@
+{% extends "crawl/base.html" %}
+
+{% block title %}Blog {{ blog.name }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h3>Data About Blog <a href="http://{{ blog.name }}.blog.ir">{{ blog.name }}</a></h3>
+
+    <div class="row">
+        <div class="col m6 s12">
+            <h5>Blogs come in</h5>
+            <div class="collection" style="max-height: 30rem; overflow-y: auto;">
+                {% for d in blog.dest.all %}
+                    <a href="/blog/blog/{{ d.src.name }}" class="collection-item">{{ d.src.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col m6 s12">
+            <h5>Blog go out</h5>
+            <div class="collection" style="max-height: 30rem; overflow-y: auto;">
+                {% for s in blog.src.all %}
+                    <a href="/blog/blog/{{ s.dest.name }}" class="collection-item">{{ s.dest.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

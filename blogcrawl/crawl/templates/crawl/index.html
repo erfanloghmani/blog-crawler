@@ -1,57 +1,49 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blogs</title>
+{% extends "crawl/base.html" %}
 
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% block title %}Blogs{% endblock title %}
 
-    <link rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}" />
-
-    <script src="{% static 'jquery-2.1.4.min.js' %}"></script>
-    <script src="{% static 'materialize/js/materialize.min.js' %}"></script>
-    <script src="{% static 'materialize-pagination/materialize-pagination.min.js' %}"></script>
-</head>
-<body class="">
-    <div class="container">
-      <div class="row">
-        <div class="col s12 m6">
-          <div class="card grey lighten-1">
-            <div class="card-content">
-              <span class="card-title">Number of Blogs</span>
-              <p>{{ blogs_length }}</p>
-            </div>
-          </div>
-        </div>
-        <div class="col s12 m6">
-          <div class="card grey lighten-1">
-            <div class="card-content">
-              <span class="card-title">Number of Links</span>
-              <p>{{ links_length }}</p>
-            </div>
-          </div>
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card grey lighten-1">
+        <div class="card-content">
+          <span class="card-title">Number of Blogs</span>
+          <p>{{ blogs_length }}</p>
         </div>
       </div>
-        <div class="row">
-            <div class="col m12 s12">
-                <h4>Sorted with in-degree</h4>
-                <div id="dest-collection" class="collection">
-                </div>
-                <div id="dest-pagination">
-                </div>
-                <h4>Sorted with out-degree</h4>
-                <div id="src-collection" class="collection">
-                </div>
-                <div id="src-pagination">
-                </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card grey lighten-1">
+        <div class="card-content">
+          <span class="card-title">Number of Links</span>
+          <p>{{ links_length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+        <div class="col m12 s12">
+            <h4>Sorted with in-degree</h4>
+            <div id="dest-collection" class="collection">
+            </div>
+            <div id="dest-pagination">
+            </div>
+            <h4>Sorted with out-degree</h4>
+            <div id="src-collection" class="collection">
+            </div>
+            <div id="src-pagination">
             </div>
         </div>
     </div>
+</div>
+{% endblock content %}
 
-    <script>
 
+{% block script %}
+<script>
+
+$(function(){
     for(var index = 0; index < 20 ; index++){
         $('#dest-collection').append('<div id="dest-collection-item-' + index + '"></div>')
         $('#src-collection').append('<div id="src-collection-item-' + index + '"></div>')
@@ -68,7 +60,7 @@
                 for(var index in list){
                     $.get('/blog/api/blog/' + list[index] + '?get=json', function(blog){
                         blogList[this.index] = blog;
-                        $('#dest-collection-item-' + this.index).html('<a href="http://' + blog.name + '.blog.ir" class="collection-item">' +
+                        $('#dest-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
                                 blog.name + '<span class="badge">' + blog.dest.length + '</span></a>');
 
                     }.bind({index: index}));
@@ -88,7 +80,7 @@
                 for(var index in list){
                     $.get('/blog/api/blog/' + list[index] + '?get=json', function(blog){
                         blogList[this.index] = blog;
-                        $('#src-collection-item-' + this.index).html('<a href="http://' + blog.name + '.blog.ir" class="collection-item">' +
+                        $('#src-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
                                 blog.name + '<span class="badge">' + blog.src.length + '</span></a>');
 
                     }.bind({index: index}));
@@ -96,6 +88,6 @@
             });
         }
     });
-    </script>
-</body>
-</html>
+});
+</script>
+{% endblock script %}

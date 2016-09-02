@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}" />
+
+    <script src="{% static 'jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'materialize/js/materialize.min.js' %}"></script>
+    <script src="{% static 'materialize-pagination/materialize-pagination.min.js' %}"></script>
+</head>
+<body class="">
+    {% block content %}{% endblock content %}
+    {% block script %}{% endblock script %}
+</body>
+</html>

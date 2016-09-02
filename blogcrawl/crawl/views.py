@@ -40,6 +40,13 @@ def out_degrees(request, page):
     p = list(map(lambda a: a.id, p))
     return HttpResponse(json.dumps(p))
 
+def blog(request, blog):
+    b = Blog.objects.filter(name=blog)[0]
+    context = {
+        'blog': b,
+    }
+    return render(request, 'crawl/blog.html', context)
+
 def link_count(request):
     counts = []
     for blog in Blog.objects.all():
