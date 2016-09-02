@@ -76,8 +76,6 @@ def blog(request, blog):
     c = []
     for stri in b.post.all()[0].get_text():
         soup = BeautifulSoup(str(stri), 'html.parser')
-        print(soup.contents[0].name)
-        print(str(stri))
         if soup.contents[0].name == 'img':
             c.append({'type': 'img', 'data': soup.find_all('img')[0]['src']})
         else:
