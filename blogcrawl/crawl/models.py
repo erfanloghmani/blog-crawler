@@ -87,6 +87,15 @@ class Blog(models.Model):
                     if len(t.find_all('a')) > 0:
                         title = t.find_all('a')[0]
                         break
+            try:
+                title
+            except:
+                tags = ['h2']
+                for tag in tags:
+                    for t in soup.find_all(tag):
+                        if len(t.find_all('a')) > 0:
+                            title = t.find_all('a')[0]
+                            break
 
 
         try:
@@ -121,7 +130,7 @@ class Post(models.Model):
         body_classes = ['body', 'post-content', 'context', 'PostContent']
         for body_class in body_classes:
             if len(soup.find_all(class_=body_class)) > 0:
-                body = soup.find_all(class_=body_class)[0].strings
+                body = soup.find_all(class_=body_class)[0].descendants
                 break
 
         try:

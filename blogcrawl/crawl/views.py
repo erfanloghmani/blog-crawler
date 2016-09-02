@@ -5,6 +5,7 @@ from .models import Blog, Link
 from rest_framework import viewsets
 from .serializers import BlogSerializer, LinkSerializer
 from collections import deque
+from bs4 import BeautifulSoup
 import json
 
 class BlogViewSet(viewsets.ModelViewSet):
@@ -73,14 +74,19 @@ def blog(request, blog):
     b.find_post()
 
     c = []
-    for str in b.post.all()[0].get_text():
-        c.append(str)
+    for stri in b.post.all()[0].get_text():
+        soup = BeautifulSoup(str(stri), 'html.parser')
+        print(soup.contents[0].name)
+        print(str(stri))
+        if soup.contents[0].name == 'img':
+            c.append({'type': 'img', 'data': soup.find_all('img')[0]['src']})
+        else:
+            c.append({'type': 'p', 'data': stri})
 
     context = {
         'blog': b,
         'contents': c,
     }
-
     return render(request, 'crawl/blog.html', context)
 
 def link_count(request):
