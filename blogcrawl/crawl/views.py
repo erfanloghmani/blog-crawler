@@ -81,9 +81,34 @@ def blog(request, blog):
         else:
             c.append({'type': 'p', 'data': stri})
 
+
+    d = deque()
+    nodes = {}
+    d.append(b)
+    nodes[b.id] = {'id': b.id, 'name': b.name, 'dist': 0}
+    links = []
+    while len(d) > 0:
+        x = d.pop()
+        if nodes[x.id]['dist'] < 2:
+            for src in x.src.all():
+                links.append({'source': x.id, 'target': src.dest.id, 'value': 2 / (nodes[x.id]['dist'] + 1)})
+                try:
+                    nodes[src.dest.id]
+                except:
+                    nodes[src.dest.id] = {'id': src.dest.id, 'name': src.dest.name, 'dist': nodes[x.id]['dist'] + 1}
+                    d.append(src.dest)
+            for dest in x.dest.all():
+                links.append({'source': dest.src.id, 'target': x.id, 'value': 2 / (nodes[x.id]['dist'] + 1)})
+                try:
+                    nodes[dest.src.id]
+                except:
+                    nodes[dest.src.id] = {'id': dest.src.id, 'name': dest.src.name, 'dist': nodes[x.id]['dist'] + 1}
+                    d.append(dest.src)
     context = {
         'blog': b,
         'contents': c,
+        'nodes': nodes,
+        'links': links,
     }
     return render(request, 'crawl/blog.html', context)
 
