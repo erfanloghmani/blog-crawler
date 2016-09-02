@@ -38,7 +38,7 @@ def graph(request, blog):
     links = []
     while len(d) > 0:
         x = d.pop()
-        if nodes[x.id]['dist'] < 3:
+        if nodes[x.id]['dist'] < 2:
             for src in x.src.all():
                 links.append({'source': x.id, 'target': src.dest.id})
                 try:
