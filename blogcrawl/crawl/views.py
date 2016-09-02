@@ -28,6 +28,9 @@ def index(request):
     }
     return render(request, 'crawl/index.html', context)
 
+def graph(request):
+    return render(request, 'crawl/graph.html', {})
+
 def in_degrees(request, page):
     sorted_in_degrees = Paginator(Blog.objects.order_by('-in_degree'), 20)
     p = sorted_in_degrees.page(page).object_list
