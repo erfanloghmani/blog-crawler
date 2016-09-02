@@ -4,6 +4,14 @@
 
 {% block content %}
 <div class="container">
+    {% for post in blog.post.all %}
+        <div style="direction: rtl">
+            <h4><a href="{{post.url}}">{{ post.title }}</a></h4>
+            {% for c in contents %}
+            <p>{{ c }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
     <h3>Data About Blog <a href="http://{{ blog.name }}.blog.ir">{{ blog.name }}</a></h3>
 
     <div class="row">
