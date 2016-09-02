@@ -42,9 +42,17 @@ def out_degrees(request, page):
 
 def blog(request, blog):
     b = Blog.objects.filter(name=blog)[0]
+    b.find_post()
+
+    c = []
+    for str in b.post.all()[0].get_text():
+        c.append(str)
+
     context = {
         'blog': b,
+        'contents': c,
     }
+
     return render(request, 'crawl/blog.html', context)
 
 def link_count(request):
