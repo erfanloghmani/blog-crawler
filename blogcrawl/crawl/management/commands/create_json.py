@@ -12,10 +12,11 @@ class Command(BaseCommand):
         output = {}
         nodes = []
         for blog in Blog.objects.all():
-            nodes.append({'id': blog.pk, 'name': blog.name})
+            if len(blog.src.all()) > 0 or len(blog.dest.all()) > 0:
+                nodes.append({'id': blog.pk, 'name': blog.name})
         links = []
         for link in Link.objects.all():
-            links.append({'src': link.src.pk, 'dest': link.dest.pk})
+            links.append({'source': link.src.pk, 'target': link.dest.pk})
 
         output['nodes'] = nodes
         output['links'] = links
