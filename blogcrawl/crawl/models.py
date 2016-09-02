@@ -108,7 +108,7 @@ class Blog(models.Model):
 class Post(models.Model):
     blog = models.ForeignKey(Blog, related_name="post")
     title = models.CharField(max_length=100)
-    url = models.URLField(unique=True)
+    url = models.URLField(max_length=400, unique=True)
 
     def get_text(self):
         while True:

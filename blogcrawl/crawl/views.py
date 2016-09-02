@@ -30,31 +30,7 @@ def index(request):
     return render(request, 'crawl/index.html', context)
 
 def graph(request, blog):
-    b = Blog.objects.filter(name=blog)[0]
-    d = deque()
-    nodes = {}
-    d.append(b)
-    nodes[b.id] = {'id': b.id, 'name': b.name, 'dist': 0}
-    links = []
-    while len(d) > 0:
-        x = d.pop()
-        if nodes[x.id]['dist'] < 1:
-            for src in x.src.all():
-                links.append({'source': x.id, 'target': src.dest.id})
-                try:
-                    nodes[src.dest.id]
-                except:
-                    nodes[src.dest.id] = {'id': src.dest.id, 'name': src.dest.name, 'dist': nodes[x.id]['dist'] + 1}
-                    d.append(src.dest)
-        for dest in x.dest.all():
-            links.append({'source': dest.src.id, 'target': x.id})
-            try:
-                nodes[dest.src.id]
-            except:
-                nodes[dest.src.id] = {'id': dest.src.id, 'name': dest.src.name, 'dist': nodes[x.id]['dist'] + 1}
-                d.append(dest.src)
-
-    return render(request, 'crawl/graph.html', {'nodes': nodes, 'links': links})
+    return render(request, 'crawl/graph.html', {'blog': blog})
 
 def in_degrees(request, page):
     sorted_in_degrees = Paginator(Blog.objects.order_by('-in_degree'), 20)
