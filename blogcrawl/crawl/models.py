@@ -81,12 +81,12 @@ class Blog(models.Model):
             post = posts[0]
             title = post.find_all(class_=re.compile('title'))[0].find_all('a')[0]
         except:
-            try:
-                title = soup.find_all(class_='title align')[0].find_all('a')[0]
-            except:
-                for t in soup.find_all(class_='title'):
+            title_classes = ['title', 'title align', 'PostTitle']
+            for title_class in title_classes:
+                for t in soup.find_all(class_=title_class):
                     if len(t.find_all('a')) > 0:
                         title = t.find_all('a')[0]
+                        break
 
 
         try:
@@ -118,13 +118,15 @@ class Post(models.Model):
                 continue
             break
         soup = BeautifulSoup(r.text, 'html.parser')
-        body_classes = ['body', 'post-content', 'context']
+        body_classes = ['body', 'post-content', 'context', 'PostContent']
         for body_class in body_classes:
             if len(soup.find_all(class_=body_class)) > 0:
                 body = soup.find_all(class_=body_class)[0].strings
                 break
 
-        if not body:
+        try:
+            body
+        except:
             body = ['empty']
         return body
 
