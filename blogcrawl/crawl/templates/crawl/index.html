@@ -34,6 +34,11 @@
             </div>
             <div id="src-pagination">
             </div>
+            <h4>Sorted with coeffition</h4>
+            <div id="coef-collection" class="collection">
+            </div>
+            <div id="coef-pagination">
+            </div>
         </div>
     </div>
 </div>
@@ -45,8 +50,9 @@
 
 $(function(){
     for(var index = 0; index < 20 ; index++){
-        $('#dest-collection').append('<div id="dest-collection-item-' + index + '"></div>')
-        $('#src-collection').append('<div id="src-collection-item-' + index + '"></div>')
+        $('#dest-collection').append('<div id="dest-collection-item-' + index + '"></div>');
+        $('#src-collection').append('<div id="src-collection-item-' + index + '"></div>');
+        $('#coef-collection').append('<div id="coef-collection-item-' + index + '"></div>');
     }
     $('#dest-pagination').materializePagination({
         align: 'center',
@@ -82,6 +88,26 @@ $(function(){
                         blogList[this.index] = blog;
                         $('#src-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
                                 blog.name + '<span class="badge">' + blog.src.length + '</span></a>');
+
+                    }.bind({index: index}));
+                }
+            });
+        }
+    });
+    $('#coef-pagination').materializePagination({
+        align: 'center',
+        lastPage:  {{ blog_page_count }},
+        firstPage:  1,
+        useUrlParameter: false,
+        onClickCallback: function(requestedPage){
+            $.get('/blog/coef/' + requestedPage, function(data){
+                list = JSON.parse(data);
+                blogList = []
+                for(var index in list){
+                    $.get('/blog/api/blog/' + list[index] + '?get=json', function(blog){
+                        blogList[this.index] = blog;
+                        $('#coef-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
+                                blog.name + '<span class="badge">' + blog.coeffition + '</span></a>');
 
                     }.bind({index: index}));
                 }

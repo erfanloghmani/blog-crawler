@@ -15,6 +15,7 @@ class Blog(models.Model):
     crawl_status = models.CharField(max_length=1, choices=CRAWL_STATUS)
     in_degree = models.IntegerField(null=True, default=0)
     out_degree = models.IntegerField(null=True, default=0)
+    coeffition = models.FloatField(null=True, default=0)
 
     def find_links(self):
         found_links = set()
@@ -113,6 +114,31 @@ class Blog(models.Model):
     def out_degree_count(self):
         return len(self.src.all())
 
+    def calc_coef(self):
+        neighbours = []
+        for src in self.src.all():
+            neighbours.append(src.dest)
+
+        for dest in self.dest.all():
+            neighbours.append(dest.src)
+
+        count = 0
+        for neighbour_a in neighbours:
+            for neighbour_b in neighbours:
+                for src in neighbour_a.src.all():
+                    if neighbour_b.id == src.dest.id:
+                        count += 1
+                for dest in neighbour_a.dest.all():
+                    if neighbour_b.id == dest.src.id:
+                        count += 1
+
+        try:
+            coef = count / (len(neighbours) ** 2)
+        except ZeroDivisionError:
+            coef = 0
+        self.coeffition = coef
+        self.save()
+        return coef
 
 class Post(models.Model):
     blog = models.ForeignKey(Blog, related_name="post")

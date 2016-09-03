@@ -69,6 +69,12 @@ def out_degrees(request, page):
     p = list(map(lambda a: a.id, p))
     return HttpResponse(json.dumps(p))
 
+def coef(request, page):
+    sorted_coef = Paginator(Blog.objects.order_by('-coeffition'), 20)
+    p = sorted_coef.page(page).object_list
+    p = list(map(lambda a: a.id, p))
+    return HttpResponse(json.dumps(p))
+
 def blog(request, blog):
     b = Blog.objects.filter(name=blog)[0]
     b.find_post()
@@ -128,3 +134,12 @@ def fill_degrees():
         blog.in_degree = blog.in_degree_count()
         blog.out_degree = blog.out_degree_count()
         blog.save()
+
+def fill_coef():
+    count = 0
+    for blog in Blog.objects.all():
+        if count % 100 == 0:
+            print(count)
+
+        count += 1
+        blog.calc_coef()
