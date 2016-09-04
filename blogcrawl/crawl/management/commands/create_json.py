@@ -13,21 +13,37 @@ class Command(BaseCommand):
             default='',
             help='which blog to create json',
         )
+        parser.add_argument(
+            '--d3',
+            dest='d3',
+            default='y',
+            help='is json for d3',
+        )
+
 
     def handle(self, *args, **options):
         if options['blog'] == '':
-            output = {}
-            nodes = []
-            for blog in Blog.objects.all():
-                if len(blog.src.all()) > 0 or len(blog.dest.all()) > 0:
-                    nodes.append({'id': blog.pk, 'name': blog.name})
-            links = []
-            for link in Link.objects.all():
-                links.append({'source': link.src.pk, 'target': link.dest.pk})
+            if options['d3'] == 'y':
+                output = {}
+                nodes = []
+                for blog in Blog.objects.all():
+                    if len(blog.src.all()) > 0 or len(blog.dest.all()) > 0:
+                        nodes.append({'id': blog.pk, 'name': blog.name})
+                links = []
+                for link in Link.objects.all():
+                    links.append({'source': link.src.pk, 'target': link.dest.pk})
 
-            output['nodes'] = nodes
-            output['links'] = links
-            self.stdout.write(json.dumps(output))
+                output['nodes'] = nodes
+                output['links'] = links
+                self.stdout.write(json.dumps(output))
+            else:
+                graph = {}
+                for blog in Blog.objects.all():
+                    graph[blog.id] = []
+                    for src in blog.src.all():
+                        dest = src.dest
+                        graph[blog.id].append(dest.id)
+                self.stdout.write(json.dumps(graph))
         else:
             output = {}
             b = Blog.objects.filter(name=options['blog'])[0]
