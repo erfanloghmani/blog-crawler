@@ -34,7 +34,7 @@ class Blog(models.Model):
         for a in soup.find_all('a'):
             try:
                 link = a['href']
-                m = re.match(r'http://(?P<name>\w+)\.blog.ir/', link)
+                m = re.match(r'http://(?P<name>\w+)\.blog.ir', link)
                 if m:
                     found_links.add(m.group('name'))
             except KeyError:
