@@ -109,22 +109,20 @@ class Blog(models.Model):
         neighbours = []
         for src in self.src.all():
             neighbours.append(src.dest)
-
         for dest in self.dest.all():
             neighbours.append(dest.src)
 
+        addj = {}
         count = 0
-        for neighbour_a in neighbours:
-            for neighbour_b in neighbours:
-                for src in neighbour_a.src.all():
-                    if neighbour_b.id == src.dest.id:
-                        count += 1
-                for dest in neighbour_a.dest.all():
-                    if neighbour_b.id == dest.src.id:
-                        count += 1
+        for neighbour in neighbours:
+            addj[neighbour.id] = True
 
+        for neighbour in neighbours:
+            for src in neighbour.src.all():
+                if src.dest.id in addj:
+                    count += 1
         try:
-            coef = count / (len(neighbours) ** 2)
+            coef = 1.0 * count / (len(neighbours) ** 2)
         except ZeroDivisionError:
             coef = 0
         self.coeffition = coef
