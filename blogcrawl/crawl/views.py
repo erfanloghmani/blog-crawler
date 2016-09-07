@@ -76,7 +76,15 @@ def coef(request, page):
     return HttpResponse(json.dumps(p))
 
 def blog(request, blog):
-    b = Blog.objects.filter(name=blog)[0]
+    try:
+        b = Blog.objects.filter(name=blog)[0]
+    except:
+        b = Blog()
+        b.name = blog
+        b.crawl_status = 'N'
+        b.save()
+        b.crawl()
+
     b.find_post()
 
     c = []

@@ -64,6 +64,7 @@ class Blog(models.Model):
                 self.save()
                 dest.save()
                 link.save()
+        self.calc_coef()
         self.crawl_status = 'Y'
         print(self.name + ' crowled')
         self.save()
