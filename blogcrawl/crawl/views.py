@@ -149,19 +149,3 @@ def fill_degrees():
         blog.out_degree = blog.out_degree_count()
         blog.save()
 
-def fill_coef():
-    count = 0
-    for blog in Blog.objects.all():
-        if count % 100 == 0:
-            print(count)
-
-        count += 1
-        blog.calc_coef()
-
-def fill_reaching():
-    count = 0
-    for blog in Blog.objects.all():
-        if count % 100 == 0:
-            print(count)
-        count += 1
-        blog.calc_reaching()
