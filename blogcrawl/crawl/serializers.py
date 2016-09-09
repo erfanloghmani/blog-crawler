@@ -52,10 +52,9 @@ class DestHyperlink(serializers.HyperlinkedRelatedField):
 
 
 class BlogSerializer(serializers.HyperlinkedModelSerializer):
-
-    src = SrcHyperlink(many=True, read_only=True)
-    dest = DestHyperlink(many=True, read_only=True)
+    src_len = serializers.ReadOnlyField(source='out_degree_count')
+    dest_len = serializers.ReadOnlyField(source='in_degree_count')
 
     class Meta:
         model = Blog
-        fields = ('url', 'name', 'src', 'dest', 'coeffition', 'reaching_count')
+        fields = ('url', 'name', 'src_len', 'dest_len', 'coeffition', 'reaching_count')

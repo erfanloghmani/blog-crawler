@@ -73,7 +73,7 @@ $(function(){
                     $.get('/blog/api/blog/' + list[index] + '?get=json', function(blog){
                         blogList[this.index] = blog;
                         $('#dest-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
-                                blog.name + '<span class="badge">' + blog.dest.length + '</span></a>');
+                                blog.name + '<span class="badge">' + blog.dest_len + '</span></a>');
 
                     }.bind({index: index}));
                 }
@@ -93,7 +93,7 @@ $(function(){
                     $.get('/blog/api/blog/' + list[index] + '?get=json', function(blog){
                         blogList[this.index] = blog;
                         $('#src-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
-                                blog.name + '<span class="badge">' + blog.src.length + '</span></a>');
+                                blog.name + '<span class="badge">' + blog.src_len + '</span></a>');
 
                     }.bind({index: index}));
                 }
