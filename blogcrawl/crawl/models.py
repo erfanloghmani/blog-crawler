@@ -1,6 +1,7 @@
 from django.db import models
 from django.db import IntegrityError
 from bs4 import BeautifulSoup
+from collections import deque
 import requests
 import re
 # Create your models here.
@@ -15,6 +16,8 @@ class Blog(models.Model):
     crawl_status = models.CharField(max_length=1, choices=CRAWL_STATUS)
     in_degree = models.IntegerField(null=True, default=0)
     out_degree = models.IntegerField(null=True, default=0)
+
+    reaching_count = models.IntegerField(null=True, default=0)
     coeffition = models.FloatField(null=True, default=0)
 
     def find_links(self):
@@ -138,6 +141,22 @@ class Blog(models.Model):
         self.coeffition = coef
         self.save()
         return coef
+
+    def calc_reaching(self):
+        d = deque()
+        dist = {}
+        d.append(self)
+        dist[self.id] = 0
+        while len(d) > 0:
+            x = d.popleft()
+            for dest in x.dest.all():
+                if dest.src.id not in dist:
+                    d.append(dest.src)
+                    dist[dest.src.id] = dist[x.id] + 1
+        self.reaching_count = len(dist)
+        self.save()
+        return
+
 
 class Post(models.Model):
     blog = models.ForeignKey(Blog, related_name="post")

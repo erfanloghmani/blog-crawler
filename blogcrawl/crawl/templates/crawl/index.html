@@ -39,6 +39,11 @@
             </div>
             <div id="coef-pagination">
             </div>
+            <h4>Sorted with reaching blogs</h4>
+            <div id="reaching-collection" class="collection">
+            </div>
+            <div id="reaching-pagination">
+            </div>
         </div>
     </div>
 </div>
@@ -53,6 +58,7 @@ $(function(){
         $('#dest-collection').append('<div id="dest-collection-item-' + index + '"></div>');
         $('#src-collection').append('<div id="src-collection-item-' + index + '"></div>');
         $('#coef-collection').append('<div id="coef-collection-item-' + index + '"></div>');
+        $('#reaching-collection').append('<div id="reaching-collection-item-' + index + '"></div>');
     }
     $('#dest-pagination').materializePagination({
         align: 'center',
@@ -108,6 +114,26 @@ $(function(){
                         blogList[this.index] = blog;
                         $('#coef-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
                                 blog.name + '<span class="badge">' + blog.coeffition + '</span></a>');
+
+                    }.bind({index: index}));
+                }
+            });
+        }
+    });
+    $('#reaching-pagination').materializePagination({
+        align: 'center',
+        lastPage:  {{ blog_page_count }},
+        firstPage:  1,
+        useUrlParameter: false,
+        onClickCallback: function(requestedPage){
+            $.get('/blog/reaching/' + requestedPage, function(data){
+                list = JSON.parse(data);
+                blogList = []
+                for(var index in list){
+                    $.get('/blog/api/blog/' + list[index] + '?get=json', function(blog){
+                        blogList[this.index] = blog;
+                        $('#reaching-collection-item-' + this.index).html('<a href="/blog/blog/' + blog.name + '" class="collection-item">' +
+                                blog.name + '<span class="badge">' + blog.reaching_count + '</span></a>');
 
                     }.bind({index: index}));
                 }
