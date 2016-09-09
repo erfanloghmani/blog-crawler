@@ -46,6 +46,12 @@ def coef(request, page):
     p = list(map(lambda a: a.id, p))
     return HttpResponse(json.dumps(p))
 
+def reaching(request, page):
+    sorted_reaching = Paginator(Blog.objects.order_by('-reaching_count'), 20)
+    p = sorted_reaching.page(page).object_list
+    p = list(map(lambda a: a.id, p))
+    return HttpResponse(json.dumps(p))
+
 def blog(request, blog):
     try:
         b = Blog.objects.filter(name=blog)[0]
@@ -94,3 +100,11 @@ def fill_coef():
 
         count += 1
         blog.calc_coef()
+
+def fill_reaching():
+    count = 0
+    for blog in Blog.objects.all():
+        if count % 100 == 0:
+            print(count)
+        count += 1
+        blog.calc_reaching()

@@ -58,4 +58,4 @@ class BlogSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Blog
-        fields = ('url', 'name', 'src', 'dest', 'coeffition')
+        fields = ('url', 'name', 'src', 'dest', 'coeffition', 'reaching_count')
